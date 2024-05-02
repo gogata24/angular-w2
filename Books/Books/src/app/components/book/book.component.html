@@ -1,0 +1,111 @@
+<p-toast></p-toast>
+<p-card *ngIf="!isFinished" header="Оценяване на книга">
+  <div class="grid mt-3">
+    <span class="p-float-label">
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="book!.title"
+        class="mb-6"
+        [disabled]="!isRated"
+      />
+      <label for="title">Заглавие</label>
+    </span>
+  </div>
+  <div class="grid">
+    <span class="p-float-label">
+      <textarea
+        pInputText
+        rows="5"
+        cols="30"
+        [(ngModel)]="book!.shortDescription"
+        [disabled]="!isRated"
+        class="mb-6"
+      ></textarea>
+      <label for="title">Описание</label>
+    </span>
+  </div>
+  <div class="grid">
+    <span class="p-float-label">
+      <input
+        pInputText
+        [(ngModel)]="book!.author"
+        [disabled]="!isRated"
+        class="mb-5"
+      />
+      <label for="title">Автор</label>
+    </span>
+  </div>
+  <div *ngIf="currentRating">
+    Рейтинг до момента: {{ currentRating.toFixed(1) }}
+  </div>
+  <div class="mb-3">
+    <p-rating
+      [(ngModel)]="currentRating"
+      cancel="false"
+      (onRate)="setRating()"
+    ></p-rating>
+  </div>
+  <div>
+    <button
+      pButton
+      pRipple
+      class="p-button-warning"
+      label="Редактирай"
+      [disabled]="!isRated"
+      (click)="editBook()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      icon="pi pi-angle-right"
+      class="ml-3"
+      [disabled]="!isRated"
+      (click)="confirmChanges()"
+      pTooltip="Следваща книга"
+      tooltipPosition="bottom"
+    ></button>
+  </div>
+</p-card>
+
+<p-card *ngIf="isFinished" header="Вие оценихте всички книги успешно!">
+  <div>
+    <button
+      pButton
+      pRipple
+      label="Искам да ги оценя отново!"
+      (click)="startAgain()"
+    ></button>
+  </div>
+  <div>
+    <button
+      pButton
+      pRipple
+      label="Не, ок съм!"
+      (click)="end()"
+      [disabled]="!finishButton"
+      class="mt-3 p-button-success"
+    ></button>
+  </div>
+</p-card>
+
+<p-confirmDialog #cd key="cd" accep
+  ><ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Не"
+      icon="pi pi-times"
+      class="p-button-outlined"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Да"
+      icon="pi pi-check"
+      (click)="cd.accept()"
+    ></button> </ng-template
+></p-confirmDialog>
